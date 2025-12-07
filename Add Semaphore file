@@ -1,0 +1,20 @@
+import threading 
+import time 
+
+receptionist=threading.Semaphore(1) # 1 means one doctor or one resource 
+
+def enter_examination_room(n):
+    print( f"patient {n} is waiting for his turn")
+    receptionist.acquire()
+    print(f"patient {n} is in the examination room")
+    time.sleep(2)
+    print(f"patient {n} is out of the examination room")
+    receptionist.release()
+
+
+
+patients=[]
+for i in range(10):
+    patient=threading.Thread(target=enter_examination_room, args=(i,))
+    patients.append(patient)
+    patient.start()
